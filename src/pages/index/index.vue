@@ -18,6 +18,7 @@
     >
       <block v-for="(item,index) in imgUrls" :key="index">
         <swiper-item>
+          <!-- 图片路径 -->
           <image :src="item.image_src" class="slide-image" mode="aspectfill"></image>
         </swiper-item>
       </block>
@@ -64,23 +65,22 @@
 export default {
   data() {
     return {
-      // 轮播图数据
+      // 1.0 轮播图数据
       imgUrls: [],
       cate:[1,2,3,4]
     };
   },
-  // mounted(){
-  //   console.log("Vue的mounted生命周期函数");
-  // },
   // onLoad 在小程序页面加载的时候触发一次
   onLoad(){
-    // console.log("小程序的onLoad生命周期函数");
+    // 1.0.1 在页面加载的时候请求轮播图数据
     wx.request({
-      // url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata', //开发者服务器接口地址",
+      // 不同服务器请求的数据有差异
+      // url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata', 
       url:"https://autumnfish.cn/wx/api/public/v1/home/swiperdata",
       method: 'GET',
       success: res => {
         console.log(res);
+        // 1.0.2 请求成功后，进行数据绑定
         this.imgUrls = res.data.message;
       }
     });
