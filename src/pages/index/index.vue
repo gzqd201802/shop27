@@ -52,8 +52,6 @@ export default {
   border-radius: 10rpx; 
   color:#666;
   font-size: 30rpx;
-  /* text-align: center;
-  line-height: 60rpx; */
   display: flex;
   justify-content: center;
   align-items: center;
