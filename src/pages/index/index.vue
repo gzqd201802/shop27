@@ -30,6 +30,33 @@
           <image class="cate-img" src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/icon_index_nav_4@2x.png"> </image>
       </block>
     </view>
+    <view class="divide"></view>
+    <!-- 4.0 首页楼层 -->
+    <view class="floor">
+      <view class="floor-title">
+        <image 
+          src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_title.png"
+         >
+        </image>
+      </view>
+      <view class="floor-body">
+        <view class="floor-body-left">
+          <image
+            src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_1@2x.png"
+            >
+          </image>
+        </view>
+        <view class="floor-body-right">
+          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_2@2x.png"></image>
+          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_3@2x.png"></image>
+          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_4@2x.png"></image>
+          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_5@2x.png"></image>
+        </view>
+      </view>
+    </view>
+
+
+
   </view>
 </template>
 
@@ -88,4 +115,29 @@ swiper {
   width: 128rpx;
   height: 140rpx;
 }
+/* 分割盒子 */
+.divide{
+  height: 20rpx;
+  background-color: #f4f4f4;
+}
+.floor-title image{
+  width: 750rpx;
+  height: 59rpx;
+  background-color: #f4f4f4;
+}
+.floor-body{
+  display: flex;
+  padding: 20rpx 0 20rpx 20rpx;
+}
+.floor-body-left image{
+  width: 232rpx;
+  height: 386rpx;
+  margin-right: 10rpx;
+}
+.floor-body-right image{
+  width: 232rpx;
+   height: 188rpx;
+  margin-right: 10rpx;
+}
+
 </style>
