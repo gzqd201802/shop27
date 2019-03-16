@@ -18,7 +18,7 @@
     >
       <block v-for="(item,index) in imgUrls" :key="index">
         <swiper-item>
-          <image :src="item" class="slide-image" mode="aspectfill"></image>
+          <image :src="item.image_src" class="slide-image" mode="aspectfill"></image>
         </swiper-item>
       </block>
     </swiper>
@@ -65,32 +65,25 @@ export default {
   data() {
     return {
       // 轮播图数据
-      imgUrls: [
-        "https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner1.png",
-        "https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner2.png",
-        "https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner3.png"
-      ],
+      imgUrls: [],
       cate:[1,2,3,4]
     };
   },
   // mounted(){
   //   console.log("Vue的mounted生命周期函数");
   // },
-  // 
+  // onLoad 在小程序页面加载的时候触发一次
   onLoad(){
-    console.log("小程序的onLoad生命周期函数");
-  },
-  onShow(){
-    console.log("小程序的onShow生命周期函数");
-  },
-  onReady(){
-    console.log("小程序的onReady生命周期函数");
-  },
-  onHide(){
-    console.log("小程序的onHide生命周期函数");
-  },
-  onUnload(){
-    console.log("小程序的onUnload生命周期函数");
+    // console.log("小程序的onLoad生命周期函数");
+    wx.request({
+      // url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata', //开发者服务器接口地址",
+      url:"https://autumnfish.cn/wx/api/public/v1/home/swiperdata",
+      method: 'GET',
+      success: res => {
+        console.log(res);
+        this.imgUrls = res.data.message;
+      }
+    });
   }
 };
 </script>
