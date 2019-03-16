@@ -22,6 +22,14 @@
         </swiper-item>
       </block>
     </swiper>
+    <!-- 3.0 首页分类入口 -->
+    <view class="cate">
+      <block
+        v-for="(item,index) in cate"
+        :key="index">
+          <image class="cate-img" src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/icon_index_nav_4@2x.png"> </image>
+      </block>
+    </view>
   </view>
 </template>
 
@@ -34,7 +42,8 @@ export default {
         "https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner1.png",
         "https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner2.png",
         "https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/banner3.png"
-      ]
+      ],
+      cate:[1,2,3,4]
     };
   }
 };
@@ -66,5 +75,17 @@ export default {
 }
 swiper {
   height: 340rpx;
+}
+/* 3.0 首页分类入口 */
+.cate{
+  height: 180rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.cate-img{
+  /* flex: 1; */
+  width: 128rpx;
+  height: 140rpx;
 }
 </style>
