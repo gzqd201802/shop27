@@ -16,20 +16,31 @@
   "tabBar": {
     "color": "#999",
     "backgroundColor": "#fafafa",
-    "selectedColor": "#333",
+    "selectedColor": "#eb4450",
     "borderStyle": "white",
 
     "list": [{
       "text": "首页",
       "pagePath": "pages/index/main",
-      "iconPath": "static/tabs/home.png",
-      "selectedIconPath": "static/tabs/home-active.png"
+      "iconPath": "static/tabs/tab_home_nor@3x.png",
+      "selectedIconPath": "static/tabs/tab_home_fill@3x.png"
     }, {
-      "text": "订单",
-      "pagePath": "pages/logs/main",
-      "iconPath": "static/tabs/orders.png",
-      "selectedIconPath": "static/tabs/orders-active.png"
-    }],
+      "text": "分类",
+      "pagePath": "pages/categories/main",
+      "iconPath": "static/tabs/tab_classify_nor.png",
+      "selectedIconPath": "static/tabs/tab_classify_fill@3x.png"
+    }, {
+      "text": "购物车",
+      "pagePath": "pages/cart/main",
+      "iconPath": "static/tabs/tab_cart_nor@3x.png",
+      "selectedIconPath": "static/tabs/tab_cart_fill@3x.png"
+    }, {
+      "text": "我的",
+      "pagePath": "pages/my/main",
+      "iconPath": "static/tabs/tab_my_nor@3x.png",
+      "selectedIconPath": "static/tabs/tab_my_fill@3x.png"
+    }
+  ],
 
     "position": "bottom"
   }
