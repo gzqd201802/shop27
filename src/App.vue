@@ -1,5 +1,8 @@
 <script>
 export default {
+  onLaunch(){
+    console.log("小程序初始化的时候自动触发 onLaunch");
+  },
   created () {
     // 调用API从本地缓存中获取数据
     /*

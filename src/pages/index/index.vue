@@ -72,6 +72,25 @@ export default {
       ],
       cate:[1,2,3,4]
     };
+  },
+  // mounted(){
+  //   console.log("Vue的mounted生命周期函数");
+  // },
+  // 
+  onLoad(){
+    console.log("小程序的onLoad生命周期函数");
+  },
+  onShow(){
+    console.log("小程序的onShow生命周期函数");
+  },
+  onReady(){
+    console.log("小程序的onReady生命周期函数");
+  },
+  onHide(){
+    console.log("小程序的onHide生命周期函数");
+  },
+  onUnload(){
+    console.log("小程序的onUnload生命周期函数");
   }
 };
 </script>
