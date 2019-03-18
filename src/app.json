@@ -5,6 +5,7 @@
     "pages/categories/main",
     "pages/my/main",
     "pages/search/main",
+    "pages/goods_list/main",
     "pages/logs/main"  
   ],
   "window": {
