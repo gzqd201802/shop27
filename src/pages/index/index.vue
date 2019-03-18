@@ -28,36 +28,34 @@
       <block
         v-for="(item,index) in cate"
         :key="index">
-          <image class="cate-img" src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/icon_index_nav_4@2x.png"> </image>
+          <image class="cate-img" :src="item.image_src"> </image>
       </block>
     </view>
-    <view class="divide"></view>
     <!-- 4.0 首页楼层 -->
-    <view class="floor">
-      <view class="floor-title">
-        <image 
-          src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_title.png"
-         >
-        </image>
-      </view>
-      <view class="floor-body">
-        <view class="floor-body-left">
-          <image
-            src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_1@2x.png"
-            >
+    <block v-for="(item,index) in floor" :key="index">
+    <view class="divide"></view>
+      <view class="floor">
+        <view class="floor-title">
+          <image 
+            :src="item.floor_title.image_src"
+          >
           </image>
         </view>
-        <view class="floor-body-right">
-          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_2@2x.png"></image>
-          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_3@2x.png"></image>
-          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_4@2x.png"></image>
-          <image src="https://lg-igjc8p1o-1256763078.cos.ap-shanghai.myqcloud.com/upload/pic_floor01_5@2x.png"></image>
+        <view class="floor-body">
+          <view class="floor-body-left">
+            <image
+              :src="item.product_list[0].image_src"
+              >
+            </image>
+          </view>
+          <view class="floor-body-right">
+            <block v-for="(subItem,subIndex) in item.product_list" :key="subIndex" >
+              <image v-if="subIndex !== 0" :src="item.product_list[subIndex].image_src"></image>
+            </block>
+          </view>
         </view>
       </view>
-    </view>
-
-
-
+    </block>
   </view>
 </template>
 
@@ -67,7 +65,8 @@ export default {
     return {
       // 1.0 轮播图数据
       imgUrls: [],
-      cate:[1,2,3,4]
+      cate:[],
+      floor:[]
     };
   },
   // onLoad 在小程序页面加载的时候触发一次
@@ -75,15 +74,31 @@ export default {
     // 1.0.1 在页面加载的时候请求轮播图数据
     wx.request({
       // 不同服务器请求的数据有差异
-      // url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata', 
-      url:"https://autumnfish.cn/wx/api/public/v1/home/swiperdata",
-      method: 'GET',
+      // url:"https://autumnfish.cn/wx/api/public/v1/home/swiperdata",
+      url: 'https://www.zhengzhicheng.cn/api/public/v1/home/swiperdata', 
       success: res => {
         console.log(res);
         // 1.0.2 请求成功后，进行数据绑定
         this.imgUrls = res.data.message;
       }
     });
+
+    // 2.0 请求导航分类数据
+    wx.request({
+      url: 'https://www.zhengzhicheng.cn/api/public/v1/home/catitems', 
+      success: res => {
+        this.cate = res.data.message;
+      }
+    });
+
+    // 3.0 请求首页楼层数据
+    wx.request({
+      url: 'https://www.zhengzhicheng.cn/api/public/v1/home/floordata', 
+      success: res => {
+        this.floor = res.data.message;
+      }
+    });
+
   }
 };
 </script>
