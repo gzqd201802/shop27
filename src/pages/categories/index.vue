@@ -4,8 +4,10 @@
     <search></search>  
     <!-- 2.0 分类内容 -->
     <view class="cata">
-      <view class="cata-left">
-        <block v-for="(item,index) in [1,2,3,4,5,6,67,3,4,5,6,67,3,4,5,6,67]" :key="index">
+
+
+      <scroll-view scroll-y class="cata-left">
+        <block v-for="(item,index) in [1,2,3,4,5,6,67,3,4,5,6,67,3,67,3,4,5,6,67,3,4,5,6,67]" :key="index">
           <view 
             class="item" 
             :class="{ active : index === tabIndex }"
@@ -14,7 +16,10 @@
             大家电
           </view>
         </block>
-      </view>
+      </scroll-view>
+
+
+
       <view class="cata-right">右边</view>
     </view>
   </view>
@@ -57,10 +62,11 @@ export default {
   width: 200rpx;
   background-color: #f4f4f4;
   height: 100%;
+  /* overflow: scroll; */
 }
 .cata-left .item{
   line-height: 100rpx;
-  border: 1rpx solid #ccc;
+  border-bottom: 1rpx solid #ccc;
   text-align: center;
   position: relative;
 }
