@@ -1,19 +1,31 @@
 <template>
   <view>
-    <!-- 3. 使用组件 -->
+    <!-- 1.3. 使用组件 -->
     <search></search>  
-    WXML 结构
+    <!-- 2.0 分类内容 -->
+    <view class="cata">
+      <view class="cata-left">
+        <block v-for="(item,index) in [1,2,3,4,5,6,67,3,4,5,6,67,3,4,5,6,67]" :key="index">
+          <view class="item" :class="{ active : index === 0 }">
+            大家电
+          </view>
+        </block>
+      </view>
+      <view class="cata-right">右边</view>
+    </view>
   </view>
 </template>
 
 <script>
-// 1. 导入组件
+// 1.1. 导入组件
 import Search from "../../components/search";
 export default {
   data () {
-    
+    return{
+      
+    }
   },
-  // 2. 注册组件
+  // 1.2. 注册组件
   components:{
     Search
   }
@@ -22,5 +34,43 @@ export default {
 
 <style>
 /* 最终编译成 WXSS */
+.cata{
+  display: flex;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top:100rpx;
+  bottom: 0;
+}
+.cata-left{
+  width: 200rpx;
+  background-color: #f4f4f4;
+  height: 100%;
+}
+.cata-left .item{
+  line-height: 100rpx;
+  border: 1rpx solid #ccc;
+  text-align: center;
+  position: relative;
+}
+.cata-left .item.active{
+  background-color: #fff;
+  color:red;
+}
+.cata-left .item.active::before{
+  content: "";
+  position: absolute;
+  
+  width: 10rpx;
+  background-color: red;
+  left: 0;
+  top:20rpx;
+  bottom:20rpx;
+}
 
+.cata-right{
+  flex: 1;
+  background-color:bisque;
+  height: 100%;
+}
 </style>
