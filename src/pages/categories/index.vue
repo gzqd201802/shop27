@@ -18,7 +18,6 @@
         </block>
       </scroll-view>
 
-
       <!-- 4.0 分类右边 -->
       <scroll-view scroll-y class="cata-right">
         <view class="cata-right-title">
@@ -35,9 +34,6 @@
         </view>
       </scroll-view>
 
-
-
-
     </view>
   </view>
 </template>
@@ -45,6 +41,8 @@
 <script>
 // 1.0.1. 导入搜索组件
 import Search from "../../components/search";
+// 4.0 导入请求模块
+import request from '../../utils/request.js';
 export default {
   data () {
     return{
@@ -55,6 +53,12 @@ export default {
   // 1.0.2. 注册搜索组件
   components:{
     Search
+  },
+  onLoad(){
+    // 4.0.1 使用封装的 request 发请求
+    request("https://www.zhengzhicheng.cn/api/public/v1/categories").then((res)=>{
+      console.log(res);
+    })
   },
   // 3.0 注册事件
   methods:{
@@ -76,6 +80,7 @@ export default {
   top:100rpx;
   bottom: 0;
 }
+/* 分类左边 */
 .cata-left{
   width: 200rpx;
   background-color: #f4f4f4;
@@ -104,6 +109,7 @@ export default {
   bottom:20rpx;
 }
 
+/* 分类右边 */
 .cata-right{
   flex: 1;
   height: 100%;
@@ -119,7 +125,7 @@ export default {
   color:#ccc;
   margin: 0 20rpx;
 }
-
+/* 右侧列表 */
 .cate-right-list{
   display: flex;
   flex-wrap: wrap;
