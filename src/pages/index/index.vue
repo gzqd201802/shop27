@@ -1,12 +1,7 @@
 <template>
   <view>
     <!-- 1.0 搜索框 -->
-    <navigator url="/pages/search/main" class="search" hover-class="none">
-      <view class="search-in">
-        <icon class="search-icon" type="search" size="32rpx"></icon>
-        搜索
-      </view>
-    </navigator>
+    <search></search>
     <!-- 2.0 轮播图 -->
     <swiper
       indicator-dots
@@ -16,7 +11,7 @@
       indicator-color="rgba(255,255,255,0.3)"
       indicator-active-color="rgba(255,255,255,1)"
     >
-      <block v-for="(item,index) in imgUrls" :key="index">
+      <block v-for="(item, index) in imgUrls" :key="index">
         <swiper-item>
           <!-- 图片路径 -->
           <image :src="item.image_src" class="slide-image" mode="aspectfill"></image>
@@ -26,13 +21,13 @@
     <!-- 3.0 首页分类入口 -->
     <view class="cate">
       <block
-        v-for="(item,index) in cate"
+        v-for="(item, index) in cate"
         :key="index">
           <image class="cate-img" :src="item.image_src"> </image>
       </block>
     </view>
     <!-- 4.0 首页楼层 -->
-    <block v-for="(item,index) in floor" :key="index">
+    <block v-for="(item, index) in floor" :key="index">
     <view class="divide"></view>
       <view class="floor">
         <view class="floor-title">
@@ -49,8 +44,13 @@
             </image>
           </view>
           <view class="floor-body-right">
-            <block v-for="(subItem,subIndex) in item.product_list" :key="subIndex" >
-              <image v-if="subIndex !== 0" :src="item.product_list[subIndex].image_src"></image>
+            <!-- v-for 循环 image 标签，循环出图片 -->
+            <block v-for="(subItem, subIndex) in item.product_list" :key="subIndex" >
+              <!-- v-if 排除第一张图片 -->
+              <image 
+                v-if="subIndex !== 0" 
+                :src="item.product_list[subIndex].image_src"
+              ></image>
             </block>
           </view>
         </view>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+// 1
+import Search from "../../components/search";
 export default {
   data() {
     return {
@@ -68,6 +70,10 @@ export default {
       cate:[],
       floor:[]
     };
+  },
+  // 2
+  components:{
+    Search
   },
   // onLoad 在小程序页面加载的时候触发一次
   onLoad(){
@@ -104,24 +110,7 @@ export default {
 </script>
 
 <style>
-/* 1.0 搜索框*/
-.search {
-  background-color: #eb4450;
-  padding: 20rpx;
-}
-.search-in{
-  height: 60rpx;
-  background-color: #fff;
-  border-radius: 10rpx; 
-  color:#666;
-  font-size: 30rpx;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.search-icon{
-  margin-right: 10rpx;
-}
+
 /* 2.0 轮播图 */
 .slide-image{
   width: 750rpx;
