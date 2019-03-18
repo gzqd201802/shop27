@@ -26,7 +26,11 @@
           </view>
           <view class="cate-right-list">
             <block v-for="(subitem,subindex) in item.children" :key="subindex">
-              <view class="cate-right-list-item">
+              <!-- 具体分类，点击能跳转到列表页 -->
+              <view 
+                class="cate-right-list-item"
+                @tap="gotoGoodsList(subitem.cat_name)"
+              >
                 <image :src="subitem.cat_icon">
                 </image>
                 <view>{{ subitem.cat_name }}</view>
@@ -59,11 +63,18 @@ export default {
     Search
   },
   onLoad(){
+    // 4.0.2 加载数据前，给用户提示
+    wx.showLoading({
+      title: '客官骚等',
+      mask: true
+    });
     // 4.0.1 使用封装的 request 发请求
     request("https://www.zhengzhicheng.cn/api/public/v1/categories").then((res)=>{
       // console.log(res);
       this.cate = res.data.message;
       this.rightData = this.cate[this.tabIndex].children;
+      // 4.0.3 加载成功后，记得隐藏加载框
+      wx.hideLoading();
     });
   },
   // 3.0 注册事件
@@ -77,8 +88,13 @@ export default {
       setTimeout(()=>{
         this.rightData = this.cate[this.tabIndex].children;
       },0);
+    },
+    // 跳转到商品列表页
+    gotoGoodsList(name){
+      // /pages/goods_list/main?keyword=关键字
+      wx.navigateTo({ url: '/pages/goods_list/main' + '?keyword=' + name });
     }
-  }
+  },
 }
 </script>
 
