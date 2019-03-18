@@ -1,11 +1,11 @@
 <template>
   <view>
-    <!-- 1.3. 使用组件 -->
+    <!-- 1.0.3. 使用搜索组件 -->
     <search></search>  
     <!-- 2.0 分类内容 -->
     <view class="cata">
 
-
+      <!-- 3.0 分类左边 -->
       <scroll-view scroll-y class="cata-left">
         <block v-for="(item,index) in [1,2,3,4,5,6,67,3,4,5,6,67,3,67,3,4,5,6,67,3,4,5,6,67]" :key="index">
           <view 
@@ -19,28 +19,46 @@
       </scroll-view>
 
 
+      <!-- 4.0 分类右边 -->
+      <scroll-view scroll-y class="cata-right">
+        <view class="cata-right-title">
+          电视
+        </view>
+        <view class="cate-right-list">
+          <block v-for="(item,index) in [1,2,2,3,3,1,1,1,1,1,2,2,3,3,1,1,1,1,1,2,2,3,3,1,1,1,1,1,1,1]" :key="index">
+            <view class="cate-right-list-item">
+              <image src="https://img.alicdn.com/imgextra/i1/2536908852/TB2PZ9rpstnpuFjSZFKXXalFFXa_!!2536908852-0-beehive-scenes.jpg_360x360xzq90.jpg_.webp">
+              </image>
+              <view>分类名称</view>
+            </view>
+          </block>
+        </view>
+      </scroll-view>
 
-      <view class="cata-right">右边</view>
+
+
+
     </view>
   </view>
 </template>
 
 <script>
-// 1.1. 导入组件
+// 1.0.1. 导入搜索组件
 import Search from "../../components/search";
 export default {
   data () {
     return{
+      // tab栏索引值
       tabIndex: 0
     }
   },
-  // 1.2. 注册组件
+  // 1.0.2. 注册搜索组件
   components:{
     Search
   },
-  // 注册时间
+  // 3.0 注册事件
   methods:{
-    // 切换tab栏
+    // 3.0.1 切换tab栏事件
     changeTabs(index){
       this.tabIndex = index;
     }
@@ -62,6 +80,7 @@ export default {
   width: 200rpx;
   background-color: #f4f4f4;
   height: 100%;
+  flex-shrink: 0;
   /* overflow: scroll; */
 }
 .cata-left .item{
@@ -87,7 +106,32 @@ export default {
 
 .cata-right{
   flex: 1;
-  background-color:bisque;
   height: 100%;
+}
+
+.cata-right-title{
+  text-align: center;
+  padding: 40rpx 0;
+}
+.cata-right-title::after,
+.cata-right-title::before{
+  content: "/";
+  color:#ccc;
+  margin: 0 20rpx;
+}
+
+.cate-right-list{
+  display: flex;
+  flex-wrap: wrap;
+}
+.cate-right-list-item{
+  width: 33.33%;
+  font-size: 30rpx;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.cate-right-list-item image{
+  width: 120rpx;
+  height: 120rpx;
 }
 </style>
