@@ -7,31 +7,33 @@
 
       <!-- 3.0 分类左边 -->
       <scroll-view scroll-y class="cata-left">
-        <block v-for="(item,index) in [1,2,3,4,5,6,67,3,4,5,6,67,3,67,3,4,5,6,67,3,4,5,6,67]" :key="index">
+        <block v-for="(item,index) in cate" :key="index">
           <view 
             class="item" 
             :class="{ active : index === tabIndex }"
             @tap="changeTabs(index)"
           >
-            大家电
+            {{ item.cat_name }}
           </view>
         </block>
       </scroll-view>
 
       <!-- 4.0 分类右边 -->
       <scroll-view scroll-y class="cata-right">
-        <view class="cata-right-title">
-          电视
-        </view>
-        <view class="cate-right-list">
-          <block v-for="(item,index) in [1,2,2,3,3,1,1,1,1,1,2,2,3,3,1,1,1,1,1,2,2,3,3,1,1,1,1,1,1,1]" :key="index">
-            <view class="cate-right-list-item">
-              <image src="https://img.alicdn.com/imgextra/i1/2536908852/TB2PZ9rpstnpuFjSZFKXXalFFXa_!!2536908852-0-beehive-scenes.jpg_360x360xzq90.jpg_.webp">
-              </image>
-              <view>分类名称</view>
-            </view>
-          </block>
-        </view>
+        <block v-for="(item,index) in rightData" :key="index">
+          <view class="cata-right-title">
+            {{ item.cat_name }}
+          </view>
+          <view class="cate-right-list">
+            <block v-for="(subitem,subindex) in item.children" :key="subindex">
+              <view class="cate-right-list-item">
+                <image :src="subitem.cat_icon">
+                </image>
+                <view>{{ subitem.cat_name }}</view>
+              </view>
+            </block>
+          </view>
+      </block>
       </scroll-view>
 
     </view>
@@ -42,12 +44,14 @@
 // 1.0.1. 导入搜索组件
 import Search from "../../components/search";
 // 4.0 导入请求模块
-import request from '../../utils/request.js';
+import request from '../../utils/request';
 export default {
   data () {
     return{
       // tab栏索引值
-      tabIndex: 0
+      tabIndex: 0,
+      cate:[],
+      rightData:[]
     }
   },
   // 1.0.2. 注册搜索组件
@@ -57,14 +61,22 @@ export default {
   onLoad(){
     // 4.0.1 使用封装的 request 发请求
     request("https://www.zhengzhicheng.cn/api/public/v1/categories").then((res)=>{
-      console.log(res);
-    })
+      // console.log(res);
+      this.cate = res.data.message;
+      this.rightData = this.cate[this.tabIndex].children;
+    });
   },
   // 3.0 注册事件
   methods:{
     // 3.0.1 切换tab栏事件
     changeTabs(index){
       this.tabIndex = index;
+      // 1.先清空
+      this.rightData = [];
+      // 2. 赋值阶段，利用定时器让数据清空后再赋值
+      setTimeout(()=>{
+        this.rightData = this.cate[this.tabIndex].children;
+      },0);
     }
   }
 }
