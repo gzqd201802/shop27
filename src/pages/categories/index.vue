@@ -6,7 +6,11 @@
     <view class="cata">
       <view class="cata-left">
         <block v-for="(item,index) in [1,2,3,4,5,6,67,3,4,5,6,67,3,4,5,6,67]" :key="index">
-          <view class="item" :class="{ active : index === 0 }">
+          <view 
+            class="item" 
+            :class="{ active : index === tabIndex }"
+            @tap="changeTabs(index)"
+          >
             大家电
           </view>
         </block>
@@ -22,12 +26,19 @@ import Search from "../../components/search";
 export default {
   data () {
     return{
-      
+      tabIndex: 0
     }
   },
   // 1.2. 注册组件
   components:{
     Search
+  },
+  // 注册时间
+  methods:{
+    // 切换tab栏
+    changeTabs(index){
+      this.tabIndex = index;
+    }
   }
 }
 </script>
