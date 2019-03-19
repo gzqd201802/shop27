@@ -109,7 +109,7 @@ export default {
     },
     // 跳转到搜索页
     gotoSearch(keyword){
-        wx.navigateTo({ url: '/pages/search/main?keyword='+keyword });
+        wx.redirectTo({ url: '/pages/search/main?keyword='+keyword });
     },
     // 跳转到商品详情页
     gotoDetail(id){
