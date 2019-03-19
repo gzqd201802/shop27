@@ -1,13 +1,13 @@
 <template>
   <view>
-    <!-- 商品列表页 {{ keyword }} -->
+    <!-- 1.0 商品列表页 {{ keyword }} -->
     <view class="search-wrapper">
         <view class="search-input">
             <icon type="search" size="32rpx"></icon>
             {{keyword}}
         </view>
     </view>
-    <!-- tab栏 -->
+    <!-- 2.0 tab栏 -->
     <view class="tab">
         <block v-for="(item,index) in tabsItems" :key="index">
             <view class="tab-item" :class="{ active: index === tabIndex }">
@@ -19,6 +19,8 @@
 </template>
 
 <script>
+// 2.0 导入 request 用于发起请求
+import request from "@/utils/request.js";
 export default {
   data () {
     return{
@@ -27,10 +29,12 @@ export default {
       tabIndex:0
     }
   },
-  // 获取页面启动参数只能在 onLoad 生命周期函数中获取
+  // 1.0 获取页面启动参数只能在 onLoad 生命周期函数中获取
   onLoad(query){
-    // console.log(query.keyword)
+    // 1.0.1 获取页面启动参数中的关键字
     this.keyword = query.keyword;
+    // 2.0.1 request 请求列表数据
+    request.get('goods/search')
   },
 }
 </script>
