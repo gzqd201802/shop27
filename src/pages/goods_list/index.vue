@@ -60,11 +60,20 @@ export default {
     // 页面加载的时候调用获取数据的函数
     this.getData();
   },
+  // 页面卸载事件
+  onUnload(){
+    //   初始化数据，防止小程序页面 data 数据的缓存
+    this.initData();
+  },
   methods:{
     // 3.0 封装获取数据的方法
     getData(){
         // 4.0 如果 hasMore 假，不要发起请求了
         if(!this.hasMore) return;
+        // 加载提示
+        wx.showLoading({
+          title: '加载中...'
+        });
         // 2.0 调用函数，发起搜索请求
         getSearch({
             query: this.keyword,
@@ -85,9 +94,27 @@ export default {
             if(goods.length < this.pagesize){
                 this.hasMore = false;
             }
+            // 数据加载完成后，隐藏加载框
+            wx.hideLoading();
+            // 把下拉刷新动画页停止
+            wx.stopPullDownRefresh();
             
         })
     },
+    // 初始化 data 数据
+    initData(){
+        this.pagenum = 1;
+        this.hasMore = true;
+        this.goodsList = [];
+    },
+  },
+  // 6. 下拉刷新事件
+  onPullDownRefresh(){
+    //  6.0.1 初始化页面数据
+    this.initData();
+
+    //  6.0.2 重新请求数据
+    this.getData();
   },
   // 页面触底事件
   onReachBottom(){
