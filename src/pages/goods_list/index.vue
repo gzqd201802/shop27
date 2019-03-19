@@ -19,8 +19,8 @@
 </template>
 
 <script>
-// 2.0 导入 request 用于发起请求
-import request from "@/utils/request.js";
+// 2.0 导入请求搜索的函数
+import { getSearch } from "@/api";
 export default {
   data () {
     return{
@@ -33,8 +33,10 @@ export default {
   onLoad(query){
     // 1.0.1 获取页面启动参数中的关键字
     this.keyword = query.keyword;
-    // 2.0.1 request 请求列表数据
-    request.get('goods/search')
+    // 2.0 调用函数，发起搜索请求
+    getSearch({
+        query: this.keyword
+    })
   },
 }
 </script>
