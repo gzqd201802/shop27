@@ -4,19 +4,24 @@
     <view class="search-wrapper">
       <view class="search-input">
         <icon type="search" size="32rpx"></icon>
-        <input type="text" :value="keyword" placeholder="请输入你想要的商品">
+        <input type="text" 
+          placeholder="请输入你想要的商品"
+          :value="keyword" 
+          v-model="inputVal" 
+          @confirm="inputSumbit"
+          />
       </view>
       <button class="cancel" size="mini">取消</button>
     </view>
     <!-- 2.0.1 历史分区 -->
-    <view class="history-title">
+    <view class="history-title" v-show="history.length > 0">
       <text>历史搜索</text>
-      <icon type="clear" size="30rpx"></icon>
+      <icon type="clear" size="30rpx" @tap="removeHistory"></icon>
     </view>
     <!-- 2.0.2 历史列表 -->
     <view class="history-list">
       <block v-for="(item,index) in history" :key="index">
-        <view class="history-list-item">小米</view>
+        <view class="history-list-item">{{ item }}</view>
       </block>
     </view>
     <!-- 3.0 搜索提示 -->
@@ -36,11 +41,38 @@ export default {
   data () {
     return{
       keyword:'',
-      history:[1,2,2,2,1,2,2,2,2,2,1,2,2]
+      history:[],
+      inputVal:''
     }
   },
+  // 生命周期函数 onLoad 可以获取页面参数，只会在加载的时候触发一次
   onLoad(query){
     this.keyword = query.keyword;
+  },
+  // 生命周期函数 onShow 页面隐藏后再显示可触发
+  onShow(){
+    // 如果本地有历史，存到 data 的 history 中，如果没有就赋值空数组
+    this.history = wx.getStorageSync('history') || [];
+  },
+  methods:{
+    // 1. 输入框点击完成的时候触发，在模拟器中可通过按回车模拟触发
+    inputSumbit(){
+      // console.log(this.inputVal);
+      // 1.0.1 把输入框的数据《前添加》到数组中
+      this.history.unshift(this.inputVal);
+
+      // 1.0.2 把历史存到本地
+      wx.setStorageSync('history', this.history);
+
+
+    },
+    // 2.0 清除历史记录
+    removeHistory(){
+      // 2.0.1 清空视图的数据
+      this.history = [];
+      // 2.0.2 移除本地存储的历史
+      wx.removeStorageSync('history');
+    }
   }
 }
 </script>
