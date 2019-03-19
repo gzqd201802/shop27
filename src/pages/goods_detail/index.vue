@@ -1,6 +1,6 @@
 <template>
   <view>
-    搜索页  {{keyword}}
+    商品详情页 {{goods_id}}
   </view>
 </template>
 
@@ -8,11 +8,11 @@
 export default {
   data () {
     return{
-      keyword:''
+      goods_id:""
     }
   },
   onLoad(query){
-    this.keyword = query.keyword;
+    this.goods_id = query.goods_id;
   }
 }
 </script>

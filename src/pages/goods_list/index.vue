@@ -1,7 +1,7 @@
 <template>
   <view>
     <!-- 1.0 商品列表页 {{ keyword }} -->
-    <view class="search-wrapper">
+    <view class="search-wrapper" @tap="gotoSearch(keyword)">
         <view class="search-input">
             <icon type="search" size="32rpx"></icon>
             {{keyword}}
@@ -20,7 +20,7 @@
         <block
           v-for="(item,index) in goodsList"
           :key="index">
-            <view class="goods-item">
+            <view class="goods-item" @tap="gotoDetail(item.goods_id)">
                 <image :src="item.goods_small_logo"> </image>
                 <view class="goods-right">
                     <view class="goods-title">
@@ -106,6 +106,14 @@ export default {
         this.pagenum = 1;
         this.hasMore = true;
         this.goodsList = [];
+    },
+    // 跳转到搜索页
+    gotoSearch(keyword){
+        wx.navigateTo({ url: '/pages/search/main?keyword='+keyword });
+    },
+    // 跳转到商品详情页
+    gotoDetail(id){
+        wx.navigateTo({ url: '/pages/goods_detail/main?goods_id='+id });
     },
   },
   // 6. 下拉刷新事件
