@@ -42,7 +42,7 @@
 					"id": 1,
 					"name": "商品列表页",
 					"pathName": "pages/goods_list/main",
-					"query": "keyword=TCL",
+					"query": "keyword=小",
 					"scene": null
 				}
 			]
