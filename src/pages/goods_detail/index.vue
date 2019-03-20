@@ -53,7 +53,7 @@
         <view class="iconfont icon-gouwuche"></view>
         购物车
       </navigator>
-      <view class="ft-right">
+      <view class="ft-right" @tap="addToCart(detail.goods_id)">
         加入购物车
       </view>
       <view class="ft-right">
@@ -102,7 +102,36 @@ export default {
         urls: imgUrls
       });
     },
-    
+    // 2.0 加入购物车
+    addToCart(id){
+      // 2.0.1 如果详情数据获取不到，id的值也就没有
+      if(!id) return;
+      /**  加入购物车的逻辑开始  **/
+      // 2.0.2 加入购物车提示
+      wx.showToast({
+        title: '加入成功', //提示的内容,
+        icon: 'success',  //图标,
+        duration: 1000,   //延迟时间,1秒钟后自动消失
+        mask: true,       //显示透明蒙层，防止触摸穿透,
+      });
+      // 2.0.3 获取本地存储中购物车列表数据
+      let cartList = wx.getStorageSync('cartList') || {};
+
+      // 2.0.4 分两种情况
+      if(cartList[id]){
+        //  2.0.4.1 如果本地存在数据，在原有的 count 上数量 +1
+        cartList[id].count++;
+      }else{
+        //  2.0.4.2 假如没有存放商品的记录，count 设为 1
+        cartList[id] = this.detail;
+        cartList[id].count = 1;
+      }
+
+      // 2.0.5 添加或修改选中状态
+      cartList[id].selected = true;
+      // 2.0.6 保存到本地存储
+      wx.setStorageSync('cartList', cartList );
+    },
   }
 }
 </script>
