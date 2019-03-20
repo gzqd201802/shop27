@@ -4,7 +4,12 @@
     <swiper indicator-dots autoplay circular>
         <block v-for="(item,index) in detail.pics" :key="index">
             <swiper-item>
-                <image class="slide-image" mode="aspectFill" :src="item.pics_big_url"></image>
+                <image 
+                  class="slide-image" 
+                  mode="aspectFill" 
+                  :src="item.pics_big_url"
+                  @tap="previewBigImage(item.pics_big_url)"
+                ></image>
             </swiper-item>
         </block>
     </swiper>
@@ -26,7 +31,7 @@
        <view class="detail-title">
          商品详情标题
        </view>
-       <view class="detail-conent" >
+       <view class="detail-content" >
          <!-- 3.1 小程序富文本处理 -->
          <!-- 3.1.1 mpvue 提供的解析富文本 -->
          <!-- <view v-html="detail.goods_introduce"></view> -->
@@ -38,16 +43,16 @@
     <!-- 4.0 底部固定条 -->
     <view class="footer">
       <view class="contact">
-        客服盒子，被隐藏起来的
+        <button open-type="contact">打开客服聊天窗口</button>
       </view>
       <view class="ft-left">
         <view class="iconfont icon-kefu"></view>
         联系客服
       </view>
-      <view class="ft-left">
+      <navigator url="/pages/cart/main" open-type="switchTab" class="ft-left">
         <view class="iconfont icon-gouwuche"></view>
         购物车
-      </view>
+      </navigator>
       <view class="ft-right">
         加入购物车
       </view>
@@ -68,21 +73,42 @@ export default {
       detail:{}
     }
   },
+  // 1.0 生命周期函数
   onLoad(query){
+    // 1.0.1 获取页面参数
     this.goods_id = query.goods_id;
-    // 根据商品id请求详情页数据
+    // 1.0.2 根据商品id请求详情页数据
     getDetail({
       goods_id: this.goods_id 
     }).then(res=>{
+      // 1.0.3 数据赋值
       this.detail = res.data.message;
     })
 
+  },
+  methods:{
+    // 1.0 点击预览大图
+    previewBigImage(current){
+      // 1.0.1 把之前数组对象中的图片路径字符串提取到新数组中
+      let imgUrls = [];
+      // 1.0.2 遍历原有数据处理成符合API调用的格式
+      this.detail.pics.forEach(item=>{
+        // API调用的个是要求数组中直接存放字符串
+        imgUrls.push(item.pics_big_url);
+      });
+      // 1.0.3 调用预览大图功能
+      wx.previewImage({
+        current,
+        urls: imgUrls
+      });
+    },
+    
   }
 }
 </script>
 
 <style lang="scss">
-/* 最终编译成 WXSS */
+// 1.0 轮播图分区
 swiper{
     height:720rpx;
 
@@ -92,8 +118,7 @@ swiper{
     }
 }
 
-
-
+// 2.0 商品价格商品基本信息
 .goods-price{
     padding:20rpx;
     color:red;
@@ -132,6 +157,7 @@ swiper{
     }
 }
 
+// 3.0 商品详情
 .detail{
     border-top:20rpx #eee solid;
     padding-bottom:120rpx;
@@ -145,6 +171,7 @@ swiper{
     }
 }
 
+// 4.0 底部固定条
 .footer{
     position: fixed;
     width:100%;
