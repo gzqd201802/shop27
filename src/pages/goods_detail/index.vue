@@ -2,19 +2,19 @@
   <view>
     <!-- 1.0 轮播图模块 -->
     <swiper indicator-dots autoplay circular>
-        <block v-for="(item,index) in [1,2,3,4]" :key="index">
+        <block v-for="(item,index) in detail.pics" :key="index">
             <swiper-item>
-                <image class="slide-image" mode="aspectFill" src="https://aecpm.alicdn.com/simba/img/TB1XotJXQfb_uJkSnhJSuvdDVXa.jpg"></image>
+                <image class="slide-image" mode="aspectFill" :src="item.pics_big_url"></image>
             </swiper-item>
         </block>
     </swiper>
     <!-- 2.0 商品价格标题 -->
     <view class="goods-price">
-      ￥ 999
+      ￥ {{ detail.goods_price }}
     </view>
     <view class="goods-info">
       <view class="info-left">
-        标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字标题文字
+        {{ detail.goods_name }}
       </view>
       <view class="info-right">
         <icon
@@ -29,8 +29,10 @@
        <view class="detail-title">
          商品详情标题
        </view>
-       <view class="detail-conent">
-         商品详情内容
+       <view class="detail-conent" >
+         <!-- 3.0.1 小程序富文本处理 -->
+         <!-- <view v-html="detail.goods_introduce"></view> -->
+         <rich-text type="node" :nodes="detail.goods_introduce"></rich-text>
        </view>
     </view>
     <!-- 4.0 底部固定条 -->
@@ -56,14 +58,23 @@
 </template>
 
 <script>
+import { getDetail } from "@/api";
 export default {
   data () {
     return{
-      goods_id:""
+      goods_id:"",
+      detail:{}
     }
   },
   onLoad(query){
     this.goods_id = query.goods_id;
+    // 根据商品id请求详情页数据
+    getDetail({
+      goods_id: this.goods_id 
+    }).then(res=>{
+      this.detail = res.data.message;
+    })
+
   }
 }
 </script>
