@@ -83,6 +83,30 @@ export default {
         addressInfo:""
       }
     }
+  },
+  onShow(){
+    // 1.0.5 页面显示的时候获取收货地址
+    this.address = wx.getStorageSync('address') || {};
+  },
+  methods:{
+    // 1.0 选择收获地址
+    chooseAddressHandle(){
+      wx.chooseAddress({
+        // 1.0.1 这个地方要使用箭头函数
+        success:(res)=> {
+          // 1.0.2 解构收获地址的信息
+          let {provinceName,cityName,countyName,detailInfo,userName,telNumber} = res;
+          // 1.0.3 地址信息数据绑定
+          this.address = {
+            username: userName,
+            tel: telNumber,
+            addressInfo: `${provinceName}${cityName}${countyName}${detailInfo}`
+          }
+          // 1.0.4 添加到本地存储
+          wx.setStorageSync('address', this.address);
+        }
+      });
+    }
   }
 }
 </script>
