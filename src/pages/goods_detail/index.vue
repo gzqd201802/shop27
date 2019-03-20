@@ -17,10 +17,7 @@
         {{ detail.goods_name }}
       </view>
       <view class="info-right">
-        <icon
-          type="success"
-          size="24">
-        </icon>
+        <view class="iconfont icon-shoucang"></view>
         收藏
       </view>
     </view>
@@ -30,9 +27,12 @@
          商品详情标题
        </view>
        <view class="detail-conent" >
-         <!-- 3.0.1 小程序富文本处理 -->
+         <!-- 3.1 小程序富文本处理 -->
+         <!-- 3.1.1 mpvue 提供的解析富文本 -->
          <!-- <view v-html="detail.goods_introduce"></view> -->
-         <rich-text type="node" :nodes="detail.goods_introduce"></rich-text>
+         <!-- 3.1.2 rich-text 原生小程序解析富文本 -->
+         <rich-text :nodes="detail.goods_introduce"></rich-text>
+         <!-- 3.1.3 wxParese 这是很久之前的解决方案 -->
        </view>
     </view>
     <!-- 4.0 底部固定条 -->
@@ -41,9 +41,11 @@
         客服盒子，被隐藏起来的
       </view>
       <view class="ft-left">
+        <view class="iconfont icon-kefu"></view>
         联系客服
       </view>
       <view class="ft-left">
+        <view class="iconfont icon-gouwuche"></view>
         购物车
       </view>
       <view class="ft-right">
@@ -123,6 +125,10 @@ swiper{
         flex-direction: column;
         justify-content: center;
         flex-shrink: 0;
+        // 修改字体图标大小
+        .icon-shoucang{
+          font-size:44rpx;
+        }
     }
 }
 
