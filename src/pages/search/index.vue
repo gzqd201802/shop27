@@ -14,7 +14,7 @@
       </view>
       <button class="cancel" size="mini" v-show="inputVal" @tap="clearInput">取消</button>
     </view>
-    <!-- 2.0.1 历史分区 -->
+    <!-- 2.0.1 搜索历史 -->
     <view class="history-title" v-show="history.length > 0">
       <text>历史搜索</text>
       <icon type="clear" size="30rpx" @tap="removeHistory"></icon>
@@ -26,7 +26,7 @@
       </block>
     </view>
     <!-- 3.0 搜索提示 -->
-    <view class="search-tips" v-show="tips.length > 0">
+    <view class="search-tips" v-show="inputVal">
       <block v-for="(item,index) in tips" :key="index">
         <view class="search-tips-item" @tap="gotoGoodsDetail(item.goods_id)">
           {{ item.goods_name }}
@@ -64,6 +64,8 @@ export default {
       // 1.0.1 把输入框的数据《前添加》到数组中
       this.history.unshift(this.inputVal);
 
+      // 1.0.4 数组去重
+      this.history = [...new Set(this.history)];
       // 1.0.2 把历史存到本地
       wx.setStorageSync('history', this.history);
 
@@ -105,7 +107,7 @@ export default {
 </script>
 
 <style lang="scss">
-// 搜索分区
+// 1.0 搜索分区
 .search-wrapper{
     background: #eee;
     padding:20rpx;
@@ -136,14 +138,14 @@ export default {
         margin-left:20rpx;
     }
 }
-// 历史分区
+// 2.0.1 搜索历史标题
 .history-title{
     padding:20rpx;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
+// 2.0.2 历史列表
 .history-list{
     padding:10rpx;
     &-item{
@@ -154,7 +156,7 @@ export default {
         margin:10rpx;
     }
 }
-// 搜索提示
+// 3.0 搜索提示
 .search-tips{
   position: fixed;
   left:0;

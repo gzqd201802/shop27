@@ -99,6 +99,11 @@ export default {
 </script>
 
 <style>
+.search {
+  position: fixed;
+  width: 100%;
+  box-sizing: border-box;
+}
 /* 最终编译成 WXSS */
 .cata{
   display: flex;
