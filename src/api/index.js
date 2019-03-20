@@ -9,6 +9,7 @@ import request from "@/utils/request.js";
 
 // 箭头函数写法
 // 获取商品列表
+// export const getSearch = (obj) => { return request.get("goods/search", obj)};
 export const getSearch = obj => request.get("goods/search", obj);
 // 获取搜索提示列表
 export const getTips = obj => request.get("goods/qsearch", obj);
