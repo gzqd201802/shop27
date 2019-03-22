@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import { createOrder , payOrder , payOrderUpdata } from "@/api";
 export default {
   data () {
     return{
@@ -118,67 +117,12 @@ export default {
     // 7.0 发起微信支付
     payOrder(){
       // console.log("发起微信支付");
-      // 判断用户是否已经登录，检查本地有没有 token 如果有就走创建订单和支付的逻辑,没有走授权登录逻辑
-      // 7.1 获取本地 token
+      // 7.0.1 判断用户是否已经登录，检查本地有没有 token 如果有就走创建订单和支付的逻辑,没有走授权登录逻辑
       const token = wx.getStorageSync('token');
-      // 7.2.1 判断是否有 token
+      // 7.0.1 判断是否有 token
       if(token){
-        // console.log("支付逻辑");
-        // 7.3 向服务器创建订单逻辑
-        // 7.3.1 订单价格
-        let order_price = this.computedData.allPrice;
-        // 7.3.2 订单地址
-        let consignee_addr = this.address.addressInfo;
-        // 7.3.3 初始化商品列表数组 goods
-        let goods = [];
-        // 7.3.4 遍历所有商品信息
-        for(let key in this.cartList){
-          let item = this.cartList[key];
-          if(item.selected){
-            // 7.3.5 获取订单提交时候的商品信息
-            let obj = {
-              goods_id : item.goods_id,
-              goods_price : item.goods_price,
-              goods_number : item.count
-            }
-            // 7.3.6 追加到 goods 的数组中
-            goods.push(obj);
-          }
-        }
-        // console.log( order_price,consignee_addr,goods)
-        // 7.3.7 向服务器创建订单
-        createOrder({
-          order_price,
-          consignee_addr,
-          goods
-        }).then(res=>{
-          // console.log(res.data.message)
-          const { order_number } = res.data.message;
-          // 7.4 向服务器发起订单支付
-          payOrder({
-            order_number
-          }).then(res=>{
-            // 7.4.1 获取订单支付对象
-            const { pay } = res.data.message;
-            // console.log(pay);
-            // 7.5 调用微信支付接口
-            wx.requestPayment({
-              ...pay,
-              success: res => {
-                console.log("用户成功支付");
-                // 7.6 向服务器传递订单编号，更新订单的支付状态
-                payOrderUpdata({
-                  order_number
-                })
-              },
-              fail: () => {
-                console.log("用户支付失败");
-              }
-            });
-          })
-        })
+        console.log("支付逻辑");
       }else{
-        // 7.2.2 如果没有 token 跳转到授权登录页
         console.log("登录授权");
         wx.navigateTo({ url: '/pages/auth/main' });
       }
