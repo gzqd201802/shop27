@@ -7,6 +7,7 @@
     "pages/search/main",
     "pages/goods_list/main",
     "pages/goods_detail/main",
+    "pages/pay/main",
     "pages/logs/main"  
   ],
   "window": {

@@ -62,16 +62,20 @@
     </view>
     <!-- 3.0 底部固定条 -->
     <div class="cart-total">
-      <view class="total-button">
-        <view class="iconfont icon-xuanze"></view>
+      <view class="total-button"
+        @tap="allSelected(computedData.cartLength===computedData.allCount)"
+      >
+        <view class="iconfont" 
+        :class="computedData.cartLength===computedData.allCount ? 'icon-xuanze-fill' : 'icon-xuanze'"
+        ></view>
         全选
       </view>
       <view class="total-center">
-        <view>合计:<text class="color-red">￥ 999</text> </view>
+        <view>合计:<text class="color-red">￥ {{ computedData.allPrice }}</text> </view>
         <div class="price-tips">包含运费</div>
       </view>
-      <view class="accounts">
-        结算(3)
+      <view class="accounts" @tap="gotoPay">
+        结算({{ computedData.allCount }})
       </view>
     </div>
   </view>
@@ -89,6 +93,51 @@ export default {
       cartList: {}
     }
   },
+  // 计算属性
+  computed:{
+    computedData(){
+      // 初始化价格为 0 
+      let _allPrice = 0;
+      let _allCount = 0;
+      let _cartLength = Object.keys(this.cartList).length;
+      // 遍历购物车数据中哪些商品被选中了，计算总金额
+      for(let key in this.cartList){
+        let item = this.cartList[key];
+        // 如果遍历到的元素为选中状态，才计算
+        if(item.selected){
+          // 价格 * 数量
+          _allPrice += item.goods_price * item.count;
+          // 选中总个数
+          _allCount++;
+        }
+      }
+      // 总金额返回值
+      return {
+        allPrice: _allPrice,
+        allCount: _allCount,
+        cartLength: _cartLength
+      };
+      // return _allCount;
+    },
+    // // 计算选中商品的数量
+    // allCount(){
+    //   // 初始化价格为 0 
+    //   let _allCount = 0;
+    //   // 遍历购物车数据中哪些商品被选中了，计算总金额
+    //   for(let key in this.cartList){
+    //     let item = this.cartList[key];
+    //     // 如果遍历到的元素为选中状态，才计算
+    //     if(item.selected){
+    //       // 价格 * 数量
+    //       // _allPrice += item.goods_price * item.count;
+    //       _allCount++;
+    //     }
+    //   }
+    //   // 总金额返回值
+    //   return _allCount;
+    // }
+  },
+  // 生命周期函数
   onShow(){
     // 1.0.5 页面显示的时候获取收货地址
     this.address = wx.getStorageSync('address') || {};
@@ -151,10 +200,21 @@ export default {
     },
     // 4.0 点击选择图标，切换选中状态
     changeSelected(id,bl){
-      console.log(id,bl)
-      this.cartList[id].selected = !this.cartList[id].selected;
-    }
-
+      // 把当前的选中状态取反再重新赋值
+      this.cartList[id].selected = !bl;
+    },
+    // 5.0 点击全选按钮修改列表状态
+    allSelected(bl){
+      // console.log(bl);
+      for(let key in this.cartList){
+        let item = this.cartList[key];
+        item.selected = !bl;
+      }
+    },
+    // 6.0 跳转到结算支付页面
+    gotoPay(){
+      wx.navigateTo({ url: '/pages/pay/main' });
+    },
   }
 }
 </script>
