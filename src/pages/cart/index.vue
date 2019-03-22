@@ -24,31 +24,35 @@
     <view class="list-title">优购生活馆</view>
     <view class="ware-list">
       <!-- 2.0.1 商品列表 -->
-      <block v-for="(item,index) in [1,2,3]" :key="index">
-        <view class="ware-item">
+      <block v-for="(item,index) in cartList" :key="index">
+        <view class="ware-item" @tap="gotoDetail(item.goods_id)">
           <!-- 2.0.2 左边按钮 -->
           <view class="choice-button">
-            <view class="iconfont icon-xuanze-fill"></view>
+            <view 
+              class="iconfont" 
+              :class="item.selected ? 'icon-xuanze-fill' : 'icon-xuanze'"
+              @tap.stop="changeSelected(item.goods_id,item.selected)"
+            ></view>
           </view>
           <!-- 2.0.3 右边图片和商品信息 -->
           <div class="ware-content">
             <!-- 2.0.4 图片 -->
             <view class="ware-image">
-              <image :src="'https://img.alicdn.com/imgextra/i1/2536908852/TB2PZ9rpstnpuFjSZFKXXalFFXa_!!2536908852-0-beehive-scenes.jpg_360x360xzq90.jpg_.webp'" mode="aspectFill"></image>
+              <image :src="item.goods_small_logo" mode="aspectFill"></image>
             </view>
             <!-- 2.0.5 商品信息 -->
             <view class="ware-info">
               <view class="ware-info-title">
-                商品标题
+                {{ item.goods_name }}
               </view>
               <div class="ware-info-btm">
                 <view class="ware-price">
-                  ￥ 999
+                  ￥ {{ item.goods_price }}
                 </view>
                 <div class="calculate">
-                  <div class="rect">-</div>
-                  <div class="number">3</div>
-                  <div class="rect">+</div>
+                  <div class="rect" @tap.stop="changeCount(item.goods_id, -1)">-</div>
+                  <div class="number">{{ item.count }}</div>
+                  <div class="rect" @tap.stop="changeCount(item.goods_id, 1)">+</div>
                 </div>
               </div>
             </view>
@@ -81,12 +85,15 @@ export default {
         username:"",
         tel:"",
         addressInfo:""
-      }
+      },
+      cartList: {}
     }
   },
   onShow(){
     // 1.0.5 页面显示的时候获取收货地址
     this.address = wx.getStorageSync('address') || {};
+    // 2.0.1 购物车列表获取
+    this.cartList = wx.getStorageSync('cartList') || {};
   },
   methods:{
     // 1.0 选择收获地址
@@ -106,7 +113,48 @@ export default {
           wx.setStorageSync('address', this.address);
         }
       });
+    },
+    // 2.0 点击跳转到详情页
+    gotoDetail(id){
+      wx.navigateTo({ url: '/pages/goods_detail/main?goods_id='+id });
+    },
+    // 3.0 点击商品数量增加或减少
+    changeCount(id , num){
+      // 3.0.1 修改商品数量
+      this.cartList[id].count += num;
+      // 3.0.2 如果数据减少到 0，提示是否删除
+      if(this.cartList[id].count === 0){
+        // 3.0.3 弹出模态窗口
+        wx.showModal({
+          title: '提示', //提示的标题,
+          content: '是否删除当前商品', //提示的内容,
+          showCancel: true, //是否显示取消按钮,
+          confirmText: '删除', //确定按钮的文字，默认为取消，最多 4 个字符,
+          confirmColor: '#f00', //确定按钮的文字颜色,
+          success: res => {
+            if (res.confirm) {
+              console.log('用户点击确定')
+              // MpVue 有 bug，删除对象的时候，数据发生了变化，但是视图无法更新
+              // 怎么解决这个 bug，把要删除的数据先改一下再删除才可以
+              this.cartList[id].count = 1;
+              delete this.cartList[id];
+
+              console.log(this.cartList);
+
+            } else if (res.cancel) {
+              this.cartList[id].count = 1;
+             
+            }
+          }
+        });
+      }
+    },
+    // 4.0 点击选择图标，切换选中状态
+    changeSelected(id,bl){
+      console.log(id,bl)
+      this.cartList[id].selected = !this.cartList[id].selected;
     }
+
   }
 }
 </script>
