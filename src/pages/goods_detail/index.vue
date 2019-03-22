@@ -83,6 +83,8 @@ export default {
     }).then(res=>{
       // 1.0.3 数据赋值
       this.detail = res.data.message;
+      // 1.0.4 IOS不支持 webp 的格式，所以统一替换成 jpg 的图片路径
+      this.detail.goods_introduce = this.detail.goods_introduce.replace(/jpg.+?webp/g,'jpg');
     })
 
   },
