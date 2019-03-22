@@ -15,5 +15,7 @@ export const getSearch = obj => request.get("goods/search", obj);
 export const getTips = obj => request.get("goods/qsearch", obj);
 // 获取商品详情
 export const getDetail = obj => request.get("goods/detail", obj);
+// 用户登录换取 token
+export const userLogin = obj => request.post("users/wxlogin", obj);
 
 

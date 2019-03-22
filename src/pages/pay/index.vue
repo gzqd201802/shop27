@@ -116,7 +116,16 @@ export default {
     },
     // 7.0 发起微信支付
     payOrder(){
-      console.log("发起微信支付");
+      // console.log("发起微信支付");
+      // 7.0.1 判断用户是否已经登录，检查本地有没有 token 如果有就走创建订单和支付的逻辑,没有走授权登录逻辑
+      const token = wx.getStorageSync('token');
+      // 7.0.1 判断是否有 token
+      if(token){
+        console.log("支付逻辑");
+      }else{
+        console.log("登录授权");
+        wx.navigateTo({ url: '/pages/auth/main' });
+      }
     }
   }
 }

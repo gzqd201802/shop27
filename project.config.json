@@ -29,7 +29,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 5,
+			"current": 6,
 			"list": [
 				{
 					"id": -1,
@@ -70,6 +70,13 @@
 					"id": -1,
 					"name": "结算支付页",
 					"pathName": "pages/pay/main",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "授权登录页",
+					"pathName": "pages/auth/main",
 					"query": "",
 					"scene": null
 				}

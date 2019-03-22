@@ -8,6 +8,7 @@
     "pages/goods_list/main",
     "pages/goods_detail/main",
     "pages/pay/main",
+    "pages/auth/main",
     "pages/logs/main"  
   ],
   "window": {
