@@ -1,83 +1,96 @@
 <template>
   <view>
-    <!-- 1.0 顶部地址选择 -->
-    <view class="cart-top" @tap="chooseAddressHandle">
-      <!-- 1.0.1 用户选择了收货地址的时候展示 -->
-      <block v-if="address.username">
-        <view class="user">
-          <text>收货人：{{ address.username }}</text>
-          <text>{{ address.tel }}</text>
-        </view>
-        <view class="address">
-          收货地址：{{ address.addressInfo }}
-        </view>
-      </block>
-      <!-- 1.0.2 用户没选择收货地址的时候，显示添加收货地址 -->
-      <block v-else>
-        <view class="add-address">
-          <button>+ 添加收货地址</button>
-        </view>
-      </block>
-      <view class="address-border"></view>
-    </view>
-    <!-- 2.0 店铺标题和商品列表 -->
-    <view class="list-title">优购生活馆</view>
-    <view class="ware-list">
-      <!-- 2.0.1 商品列表 -->
-      <block v-for="(item,index) in cartList" :key="index">
-        <view class="ware-item" @tap="gotoDetail(item.goods_id)">
-          <!-- 2.0.2 左边按钮 -->
-          <view class="choice-button">
-            <view 
-              class="iconfont" 
-              :class="item.selected ? 'icon-xuanze-fill' : 'icon-xuanze'"
-              @tap.stop="changeSelected(item.goods_id,item.selected)"
-            ></view>
+    <block v-if="computedData.cartLength > 0">
+      <!-- 1.0 顶部地址选择 -->
+      <view class="cart-top" @tap="chooseAddressHandle">
+        <!-- 1.0.1 用户选择了收货地址的时候展示 -->
+        <block v-if="address.username">
+          <view class="user">
+            <text>收货人：{{ address.username }}</text>
+            <text>{{ address.tel }}</text>
           </view>
-          <!-- 2.0.3 右边图片和商品信息 -->
-          <div class="ware-content">
-            <!-- 2.0.4 图片 -->
-            <view class="ware-image">
-              <image :src="item.goods_small_logo" mode="aspectFill"></image>
+          <view class="address">
+            收货地址：{{ address.addressInfo }}
+          </view>
+        </block>
+        <!-- 1.0.2 用户没选择收货地址的时候，显示添加收货地址 -->
+        <block v-else>
+          <view class="add-address">
+            <button>+ 添加收货地址</button>
+          </view>
+        </block>
+        <view class="address-border"></view>
+      </view>
+      <!-- 2.0 店铺标题和商品列表 -->
+      <view class="list-title">优购生活馆</view>
+      <view class="ware-list">
+        <!-- 2.0.1 商品列表 -->
+        <block v-for="(item,index) in cartList" :key="index">
+          <view class="ware-item" @tap="gotoDetail(item.goods_id)">
+            <!-- 2.0.2 左边按钮 -->
+            <view class="choice-button">
+              <view 
+                class="iconfont" 
+                :class="item.selected ? 'icon-xuanze-fill' : 'icon-xuanze'"
+                @tap.stop="changeSelected(item.goods_id,item.selected)"
+              ></view>
             </view>
-            <!-- 2.0.5 商品信息 -->
-            <view class="ware-info">
-              <view class="ware-info-title">
-                {{ item.goods_name }}
+            <!-- 2.0.3 右边图片和商品信息 -->
+            <div class="ware-content">
+              <!-- 2.0.4 图片 -->
+              <view class="ware-image">
+                <image :src="item.goods_small_logo" mode="aspectFill"></image>
               </view>
-              <div class="ware-info-btm">
-                <view class="ware-price">
-                  ￥ {{ item.goods_price }}
+              <!-- 2.0.5 商品信息 -->
+              <view class="ware-info">
+                <view class="ware-info-title">
+                  {{ item.goods_name }}
                 </view>
-                <div class="calculate">
-                  <div class="rect" @tap.stop="changeCount(item.goods_id, -1)">-</div>
-                  <div class="number">{{ item.count }}</div>
-                  <div class="rect" @tap.stop="changeCount(item.goods_id, 1)">+</div>
+                <div class="ware-info-btm">
+                  <view class="ware-price">
+                    ￥ {{ item.goods_price }}
+                  </view>
+                  <div class="calculate">
+                    <div class="rect" @tap.stop="changeCount(item.goods_id, -1)">-</div>
+                    <div class="number">{{ item.count }}</div>
+                    <div class="rect" @tap.stop="changeCount(item.goods_id, 1)">+</div>
+                  </div>
                 </div>
-              </div>
-            </view>
-          </div>
+              </view>
+            </div>
+          </view>
+        </block>
+      </view>
+      <!-- 3.0 底部固定条 -->
+      <div class="cart-total">
+        <view class="total-button"
+          @tap="allSelected(computedData.cartLength===computedData.allCount)"
+        >
+          <view class="iconfont" 
+          :class="computedData.cartLength===computedData.allCount ? 'icon-xuanze-fill' : 'icon-xuanze'"
+          ></view>
+          全选
         </view>
-      </block>
-    </view>
-    <!-- 3.0 底部固定条 -->
-    <div class="cart-total">
-      <view class="total-button"
-        @tap="allSelected(computedData.cartLength===computedData.allCount)"
-      >
-        <view class="iconfont" 
-        :class="computedData.cartLength===computedData.allCount ? 'icon-xuanze-fill' : 'icon-xuanze'"
-        ></view>
-        全选
+        <view class="total-center">
+          <view>合计:<text class="color-red">￥ {{ computedData.allPrice }}</text> </view>
+          <div class="price-tips">包含运费</div>
+        </view>
+        <view class="accounts" @tap="gotoPay">
+          结算({{ computedData.allCount }})
+        </view>
+      </div>
+    </block>
+    <block v-else>
+      <view class="cart-empty-wrap">
+        <image class="cart-empty" src="/static/images/cart_empty.svg" mode="aspectFill"></image>
+        <navigator
+          url="/pages/index/main"
+          open-type="switchTab"
+          hover-class="none">
+          去首页看看
+        </navigator>
       </view>
-      <view class="total-center">
-        <view>合计:<text class="color-red">￥ {{ computedData.allPrice }}</text> </view>
-        <div class="price-tips">包含运费</div>
-      </view>
-      <view class="accounts" @tap="gotoPay">
-        结算({{ computedData.allCount }})
-      </view>
-    </div>
+    </block>
   </view>
 </template>
 
@@ -111,6 +124,8 @@ export default {
           _allCount++;
         }
       }
+      // computed 会监听购物车列表数据的变化，在变化的同时，修改本地存储
+      wx.setStorageSync('cartList', this.cartList );
       // 总金额返回值
       return {
         allPrice: _allPrice,
@@ -139,6 +154,7 @@ export default {
   },
   // 生命周期函数
   onShow(){
+    console.log("onShow");
     // 1.0.5 页面显示的时候获取收货地址
     this.address = wx.getStorageSync('address') || {};
     // 2.0.1 购物车列表获取
@@ -220,6 +236,24 @@ export default {
 </script>
 
 <style lang="scss">
+.cart-empty-wrap{
+  // width: 750rpx;
+  position: fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  right:0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color:#ff2d4a;
+}
+.cart-empty{
+  width: 200rpx;
+  height: 200rpx;
+}
+
 // 1.0 顶部地址选择
 .cart-top {
     min-height: 180rpx;

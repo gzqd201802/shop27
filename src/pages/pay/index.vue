@@ -154,6 +154,20 @@ export default {
         }).then(res=>{
           // console.log(res.data.message)
           const { order_number } = res.data.message;
+
+          let _cartList = {};
+          // 遍历购物车数据
+          for(let key in this.cartList){
+            let item = this.cartList[key];
+            // 删除掉选中的，因为这些商品已经被提交到了服务器端
+            if(!item.selected){
+               _cartList[key] = item;
+            }
+          }
+          this.cartList = _cartList;
+          // 本地存储更细购物车数据
+          wx.setStorageSync('cartList', this.cartList);
+
           // 7.4 向服务器发起订单支付
           payOrder({
             order_number
@@ -169,10 +183,34 @@ export default {
                 // 7.6 向服务器传递订单编号，更新订单的支付状态
                 payOrderUpdata({
                   order_number
+                }).then(res=>{
+                  // 校验是否支付成功
+                  const { status } = res.data.meta;
+                  if(status === 200){
+                    wx.showToast({
+                      title: '支付成功', //提示的内容,
+                      icon: 'success', //图标,
+                      duration: 1000, //延迟时间,
+                      mask: true, //显示透明蒙层，防止触摸穿透,
+                      success: res => {
+                        // 支付成功提示后跳转到我的
+                        wx.switchTab({ url: '/pages/my/main' });
+                      }
+                    });
+                  }
                 })
               },
               fail: () => {
                 console.log("用户支付失败");
+                wx.showToast({
+                      title: '支付失败', //提示的内容,
+                      icon: 'success', //图标,
+                      duration: 1000, //延迟时间,
+                      mask: true, //显示透明蒙层，防止触摸穿透,
+                      success: res => {
+                        wx.switchTab({ url: '/pages/cart/main' });
+                      }
+                    });
               }
             });
           })
